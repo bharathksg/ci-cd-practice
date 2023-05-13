@@ -1,0 +1,25 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # Adjust to the branch you want to trigger the deployment from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into server and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}  # Add your server's IP address or hostname as a secret in your repository
+          username: ${{ secrets.SERVER_USERNAME }}  # Add your server's username as a secret in your repository
+          password: ${{ secrets.SERVER_PASSWORD }}  # Add your server's password as a secret in your repository
+          port: 22  # Adjust the SSH port if necessary
+          script: |
+            git pull origin main  # Adjust the branch name if necessary
+            # Add any additional deployment steps or commands here
