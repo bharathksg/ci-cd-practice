@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install expect
-        run: sudo apt-get install -y expect
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
 
       - name: Execute remote commands
         env:
@@ -22,9 +22,5 @@ jobs:
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          spawn ssh $SERVER_USERNAME@$SERVER_HOST
-          expect "password:"
-          send "$SERVER_PASSWORD\r"
-          expect "$ "
-          send "git pull origin main\r"
-          expect "$ "
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_HOST "
+          git pull origin main
