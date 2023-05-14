@@ -1,23 +1,21 @@
-name: Deploy to Server
+name: Deploy to AWS
 
 on:
   push:
     branches:
-      - main  # Adjust to the branch you want to trigger the deployment from
+      - main
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: SSH into server and deploy
+      - name: Deploy to AWS
         env:
-          SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          AWS_SERVER_IP: ${{ secrets.AWS_SERVER_IP }}
+          AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
         run: |
-          sshpass -p $SERVER_PASSWORD ssh -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_HOST << 'EOF'
-          git pull origin main  
+          scp -r ./* ${{ env.AWS_USERNAME }}@${{ env.AWS_SERVER_IP }}:/home/ubuntu
