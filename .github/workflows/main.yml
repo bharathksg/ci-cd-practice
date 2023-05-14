@@ -18,4 +18,4 @@ jobs:
           AWS_SERVER_IP: ${{ secrets.AWS_SERVER_IP }}
           AWS_USERNAME: ${{ secrets.AWS_USERNAME }}
         run: |
-          scp -r ./* ${{ env.AWS_USERNAME }}@${{ env.AWS_SERVER_IP }}:/home/ubuntu
+          scp -r ./* ${{ env.AWS_USERNAME }}@${{ env.AWS_SERVER_IP }}:/home/ubuntu/ci-cd-practice
